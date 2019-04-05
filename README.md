@@ -1,2 +1,1 @@
-"# nodeprj-mathlottery" 
 "# nodeprj-mathbmilottery" 
