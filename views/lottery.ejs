@@ -1,0 +1,77 @@
+<!DOCTYPE html> <!-- !DOCTYPE html是宣告這個網頁是基於HTML5所寫的 -->
+<html> <!-- html為網頁的起始標籤，其內包含了表頭head及內容body兩部分 -->
+<!---->
+<!-- head為網頁的表頭，通常將CSS、引用bootstrap、jquery等meta data，以及javascript函數放在表頭內 -->
+<!---->
+<head> 
+	<title>樂透號碼產生器服務操作介面</title>
+	<!-- 以下這5行是引用bootstrap及jquery CDN (Content Delivery Network)的標準動作 -->
+	 <meta charset="utf-8"> <!-- 指定內文的編碼，若要顯示中文，通常用utf-8這個unicode編碼 -->
+	 <meta name="viewport" content="width=device-width, initial-scale=1">
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	 
+	<!-- 以下這個匿名函數是jquery的ready事件處理方法，當網頁Ready好的就會自動執行 -->
+	<!-- 因此，可以把要註冊的所有事件處理函數及需要先執行的命令放在這個函數內     -->
+	<script>
+		$(function(){
+		    // 幫id為btn1的按鈕標籤註冊了點擊事件的處理方法
+			// 在jquery及nodejs通常會使用匿名函數作為事件處理方法，比較簡潔
+			
+			// 幫id為btn1的按鈕標籤註冊了點擊事件的處理方法
+			$('#btn1').click(function(){
+				$.post(
+					'/lottery/' + $('input[type="radio"]:checked').val() + '/' + $('#times').val(),
+					function(data){
+						$('#textarea1').val(data.result);
+					}
+				);
+			}); 
+						
+			// 幫id為btn2的按鈕標籤註冊了點擊事件的處理方法
+			$('#btn2').click(function(){
+				 window.location.href = '/';
+			});
+		})		
+	</script>
+</head>
+<!---->
+<!-- body為網頁的內容，也就是呈現使用者介面UI的地方 -->
+<!---->
+<body class="bg-warning" style="font-family:標楷體">
+<div class="container">
+	
+	<!-- 樂透服務之GUI設計 -->
+	<Center>
+	<h3 class="bg-primary"><b>樂透服務操作介面</b></h3>
+	<h4>
+	<form>
+		<label class="radio-inline">
+			<input type="radio" name="lotterytype" value="0" checked><b>大樂透</b>
+		</label>
+		<label class="radio-inline">
+			<input type="radio" name="lotterytype" value="1"><b>威力彩</b>
+		</label>
+		<div>
+		  <label for="times" class="text-primary"><b>輸入組數：</b></label>
+		  <input type="number" name="times" id="times" value="1">
+		</div>
+	</form>
+	<div>
+		<button id="btn1" class="btn btn-success btn-lg"><b>產生號碼</b></button>
+	</div>
+	<textarea id="textarea1" rows=8 cols=50 class=form-control"></textarea>
+	</h4>
+	</center>
+	
+	<!-- 回首頁按鈕 -->
+	<center>
+	<div> 
+		<button id="btn2" class="btn btn-info btn-md"><b>回首頁</b></button>
+	</div>
+	</center>
+	
+</div>
+</body class="bg-warning" style="font-family:標楷體">
+</html>

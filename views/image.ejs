@@ -1,0 +1,94 @@
+<!DOCTYPE html> <!-- !DOCTYPE html是宣告這個網頁是基於HTML5所寫的 -->
+<html> <!-- html為網頁的起始標籤，其內包含了表頭head及內容body兩部分 -->
+<!---->
+<!-- head為網頁的表頭，通常將CSS、引用bootstrap、jquery等meta data，以及javascript函數放在表頭內 -->
+<!---->
+<head> 
+	<title>Flickr搜尋圖片服務操作介面</title>
+	<!-- 以下這5行是引用bootstrap及jquery CDN (Content Delivery Network)的標準動作 -->
+	 <meta charset="utf-8"> <!-- 指定內文的編碼，若要顯示中文，通常用utf-8這個unicode編碼 -->
+	 <meta name="viewport" content="width=device-width, initial-scale=1">
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	 
+	<!-- 以下這個匿名函數是jquery的ready事件處理方法，當網頁Ready好的就會自動執行 -->
+	<!-- 因此，可以把要註冊的所有事件處理函數及需要先執行的命令放在這個函數內 -->
+	<script>
+		$(function(){
+		    $('#keyword').val('Dog'); // 指定預設值
+			$('#search').on('click', function () {
+			  // 取得輸入的關鍵字
+			  var keyword = $('#keyword').val();
+			  // 組成flickrAPI的查詢網址
+			  var flickrAPI = "http://api.flickr.com/services/feeds/photos_public.gne?tags=" +
+								keyword + "&tagmode=any&format=json&jsoncallback=?";
+			  // 送出Ajax請求, 取得JSON 
+			  $.ajax({
+				   type: "GET",
+				   url: flickrAPI,
+				   dataType: "jsonp",
+				   jsonp: "callback",
+				   success: function (response) { // 成功時的處理方法
+						// 處理JSON資料
+						var gallery = $('#gallery');
+						gallery.html("");   // 清除圖片
+						gallery.append('<table>');
+						// 利用for迴圈逐項取出成果，並串接成HTML網頁標籤元素以顯示圖片及其資訊
+						for (var i = 0; i < response.items.length; i++) {
+							var item = response.items[i];
+							if (i % 2 == 0)  {
+								gallery.append('<tr>');
+								gallery.append('<td>' +
+								 '<img src="' + item.media.m +
+								 '" title="' + item.title + '" height="100" width="130"/></td>');
+							}    
+						else {
+								gallery.append('<td>' +
+								'<img src="' + item.media.m +
+								'" title="' + item.title + '" height="100" width="130"/></td>');
+								gallery.append('</tr>');  
+							}   
+						}
+						gallery.append('</table>');	
+				   },
+				   timeout: 10000,        // 設定Timeout時間為10秒鐘
+				   error: function () {  // 失敗則顯示警示方塊
+					  alert("錯誤: 無法完成Ajax請求..");
+				   }
+				});
+			}); 
+						
+			<!-- 幫id為btn1的按鈕標籤註冊了點擊事件的處理方法 -->
+			$('#btn1').click(function(){
+				 window.location.href = '/';
+			});
+		})		
+	</script>
+</head>
+<!---->
+<!-- body為網頁的內容，也就是呈現使用者介面UI的地方 -->
+<!---->
+<body class="bg-warning" style="font-family:標楷體">
+<div class="container">
+	<!-- Flickr搜尋圖片服務之GUI設計 -->
+	<Center>
+	<h3 class="bg-primary"><b>Flickr搜尋圖片服務操作介面</b></h3>
+	<div> 
+	    <h1>搜尋Flickr圖片</h1>
+		<input type="text" name="keyword" id="keyword"/>
+		<button id="search">搜尋</button> 
+		<p/>
+		<div id="gallery"></div>
+	</div>
+	
+	<!-- 回首頁按鈕 -->
+	<center>
+	<div> 
+		<button id="btn1" class="btn btn-info btn-md"><b>回首頁</b></button>
+	</div>
+	</center>
+	
+</div>
+</body>
+</html>
