@@ -31,13 +31,13 @@ router.get('/', function(req, res) {
 });
 
 // 顯示數學服務操作介面
-router.get('/bmi', function(req, res) {
-	res.render('bmi');
+router.get('/math', function(req, res) {
+	res.render('math');
 });
 
 // 顯示BMI計算服務操作介面
-router.get('/math', function(req, res) {
-	res.render('math');
+router.get('/bmi', function(req, res) {
+	res.render('bmi');
 });
 
 // 顯示樂透服務操作介面
